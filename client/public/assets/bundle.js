@@ -8260,8 +8260,6 @@ window.vultr = vultr;
                 return null;
             }
 
-            // TERMS:
-
             // GLOBAL VALUES:
             var moofoll = getSavedVal("moofoll");
 
@@ -8379,8 +8377,8 @@ window.vultr = vultr;
             // ON LOAD:
             var inWindow = true;
             var didLoad = false;
-            var captchaReady = false;
-            captchaReady = true;
+            //var captchaReady = false;
+            //captchaReady = true;
             !window.onblur && (window.onblur = function() {
                 inWindow = false;
             });
@@ -8425,7 +8423,8 @@ window.vultr = vultr;
             function bindEvents() {
                 enterGameButton.onclick = UTILS.checkTrusted(function() {
                     // SHOW AD TO START GAME:
-                    showPreAdIfReady();
+                    //showPreAdIfReady();
+                    enterGame();
                 });
                 UTILS.hookTouchEvents(enterGameButton);
                 promoImageButton.onclick = UTILS.checkTrusted(function() {
@@ -8474,6 +8473,7 @@ window.vultr = vultr;
 
                     // COUNT PLAYERS:
                     var totalPlayers = 0;
+                    ``;
                     for (var i = 0; i < serverList.length; i++) {
                         for (var j = 0; j < serverList[i].games.length; j++) {
                             totalPlayers += serverList[i].games[j].playerCount;
@@ -8560,7 +8560,7 @@ window.vultr = vultr;
             }));
 
             /*** START CPMSTAR ***/
-            var preContentContainer = document.getElementById("pre-content-container");
+            /*var preContentContainer = document.getElementById("pre-content-container");
             var preAdInterval = 1000 * 60 * 5; // 5 minutes
             var preAdLastShowTime = 0;
             var preAdGameCount = 0;
@@ -8576,9 +8576,9 @@ window.vultr = vultr;
                 } else {
                     enterGame();
                 }
-            }
+            }*/
 
-            function showPreAd() {
+            /*function showPreAd() {
                 // API FAILED TO LOAD:
                 if (!window.adsbygoogle) {
                     return console.log("Failed to load video ad API");
@@ -8604,7 +8604,7 @@ window.vultr = vultr;
 
                 // CHECK AD SUCCESS:
                 enterGame();
-            }
+            }*/
             /*** END CPMSTAR ***/
 
             /*** START PLAYWIRE ***/
@@ -9611,6 +9611,7 @@ window.vultr = vultr;
 
             // KEYS:
             var keys = {};
+            var num = 0;
             var moveKeys = {
                 87: [0, -1],
                 38: [0, -1],
@@ -9641,7 +9642,12 @@ window.vultr = vultr;
                     if (!keys[keyNum]) {
                         keys[keyNum] = 1;
                         if (keyNum == 69) {
-                            sendAutoGather();
+                            if (num === 0) {
+              num = 1;
+            } else {
+              num = 0;
+            }
+            sendAutoGather(num);
                         } else if (keyNum == 67) {
                             updateMapMarker();
                         } else if (keyNum == 88) {
@@ -9715,8 +9721,8 @@ window.vultr = vultr;
                 io.send("14", 1);
             }
 
-            function sendAutoGather() {
-                io.send("7", 1);
+            function sendAutoGather(num) {
+                io.send("7", num);
             }
 
             function selectToBuild(index, wpn) {
@@ -9768,27 +9774,6 @@ window.vultr = vultr;
             var deathTextScale = 99999;
 
             function killPlayer() {
-                inGame = false;
-                try {
-                    factorem.refreshAds([2], true);
-                } catch (e) {};
-                gameUI.style.display = "none";
-                hideAllWindows();
-                lastDeath = {
-                    x: player.x,
-                    y: player.y
-                };
-                loadingText.style.display = "none";
-                diedText.style.display = "block";
-                diedText.style.fontSize = "0px";
-                deathTextScale = 0;
-                setTimeout(function() {
-                    menuCardHolder.style.display = "block";
-                    mainMenu.style.display = "block";
-                    // Sound.play("menu", 1, true);
-                    diedText.style.display = "none";
-                }, config.deathFadeout);
-
                 // UPDATE SERVER LIST:
                 updateServerList();
             }
@@ -10001,7 +9986,7 @@ window.vultr = vultr;
                                 tmpObj.x = tmpObj.x1 + (tmpDiff * tmpRate);
                                 tmpDiff = (tmpObj.y2 - tmpObj.y1);
                                 tmpObj.y = tmpObj.y1 + (tmpDiff * tmpRate);
-                                tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, Math.min(1.2, ratio));
+                                tmpObj.dir = Math.lerpAngle(tmpObj.d2, tmpObj.d1, 1);
                             }
                         }
                     }
@@ -10099,10 +10084,10 @@ window.vultr = vultr;
                     }
 
                     // RENDER GAME OBJECTS (LAYERED):
+                    renderPlayers(xOffset, yOffset, 1);
                     renderGameObjects(0, xOffset, yOffset);
                     renderProjectiles(1, xOffset, yOffset);
                     renderGameObjects(1, xOffset, yOffset);
-                    renderPlayers(xOffset, yOffset, 1);
                     renderGameObjects(2, xOffset, yOffset);
                     renderGameObjects(3, xOffset, yOffset);
 
@@ -10147,6 +10132,8 @@ window.vultr = vultr;
                                     mainContext.fillStyle = "#fff";
                                     mainContext.textBaseline = "middle";
                                     mainContext.textAlign = "center";
+                                    mainContext.strokeStyle = outlineColor;
+                mainContext.globalAlpha = 1;
                                     mainContext.lineWidth = (tmpObj.nameScale ? 11 : 8);
                                     mainContext.lineJoin = "round";
                                     mainContext.strokeText(tmpText, tmpObj.x - xOffset, (tmpObj.y - yOffset - tmpObj.scale) - config.nameY);
@@ -13151,7 +13138,7 @@ window.vultr = vultr;
                 // RESET RESOURCES:
                 this.resetResources = function(moofoll) {
                     for (var i = 0; i < config.resourceTypes.length; ++i) {
-                        this[config.resourceTypes[i]] = moofoll ? 100 : 0;
+                        this[config.resourceTypes[i]] = 999999; //moofoll ? 100 : 0;
                     }
                 };
 
@@ -15114,6 +15101,7 @@ window.vultr = vultr;
             };
 
             VultrClient.prototype.start = function(callback, errorCallback) {
+                return callback();
                 // Set the callback
                 this.callback = callback;
                 this.errorCallback = errorCallback;
@@ -15469,97 +15457,6 @@ window.vultr = vultr;
                     region = region.slice(3);
                 }
                 return region;
-            };
-
-            window.testVultrClient = function() {
-                var assertIndex = 1;
-
-                function assert(actual, expected) {
-                    actual = `${actual}`;
-                    expected = `${expected}`;
-                    if (actual == expected) {
-                        console.log(`Assert ${assertIndex} passed.`)
-                    } else {
-                        console.warn(`Assert ${assertIndex} failed. Expected ${expected}, got ${actual}.`)
-                    }
-                    assertIndex++;
-                }
-
-                function generateServerList(regions) {
-                    var servers = [];
-                    for (var region in regions) {
-                        var regionServers = regions[region];
-                        for (var i = 0; i < regionServers.length; i++) {
-                            servers.push({
-                                ip: region + ":" + i,
-                                scheme: "testing",
-                                region: region,
-                                index: i,
-                                games: regionServers[i].map(p => {
-                                    return {
-                                        playerCount: p,
-                                        isPrivate: false
-                                    };
-                                })
-                            });
-                        }
-                    }
-                    return servers;
-                }
-
-                // Test 1
-                var maxPlayers = 5;
-                var client1 = new VultrClient("test.io", -1, maxPlayers, 1, false);
-                var lastError = undefined;
-                client1.errorCallback = function(error) {
-                    lastError = error
-                };
-                client1.processServers(generateServerList({
-                    1: [
-                        [0, 0, 0, 0],
-                        [0, 0, 0, 0]
-                    ],
-                    2: [
-                        [maxPlayers, 1, 0, 0],
-                        [0, 0, 0, 0]
-                    ],
-                    3: [
-                        [maxPlayers, 0, 1, maxPlayers],
-                        [0, 0, 0, 0]
-                    ],
-                    4: [
-                        [maxPlayers, 1, 1, maxPlayers],
-                        [1, 0, 0, 0]
-                    ],
-                    5: [
-                        [maxPlayers, 1, 1, maxPlayers],
-                        [1, 0, maxPlayers - 1, 0]
-                    ],
-                    6: [
-                        [maxPlayers, maxPlayers, maxPlayers, maxPlayers],
-                        [2, 3, 1, 4]
-                    ],
-                    7: [
-                        [maxPlayers, maxPlayers, maxPlayers, maxPlayers],
-                        [maxPlayers, maxPlayers, maxPlayers, maxPlayers]
-                    ],
-                }));
-                assert(client1.seekServer(1, false), [1, 0, 0]);
-                assert(client1.seekServer(1, true), [1, 1, 3]);
-                assert(client1.seekServer(2, false), [2, 0, 1]);
-                assert(client1.seekServer(2, true), [2, 1, 3]);
-                assert(client1.seekServer(3, false), [3, 0, 2]);
-                assert(client1.seekServer(3, true), [3, 1, 3]);
-                assert(client1.seekServer(4, false), [4, 0, 1]);
-                assert(client1.seekServer(4, true), [4, 1, 3]);
-                assert(client1.seekServer(5, false), [5, 1, 2]);
-                assert(client1.seekServer(5, true), [5, 1, 3]);
-                assert(client1.seekServer(6, false), [6, 1, 3]);
-                assert(client1.seekServer(6, true), undefined);
-                assert(client1.seekServer(7, false), undefined);
-                assert(client1.seekServer(7, true), undefined);
-
-                console.log("Tests passed.");
             };
 
             // FLATMAP:
