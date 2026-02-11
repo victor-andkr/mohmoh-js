@@ -241,22 +241,7 @@ export class Game {
 
         const string_id = UTILS.randomString(16);
         const sid = this.id_storage.findIndex(bool => bool);
-        const player = new Player(
-            string_id,
-            sid,
-            config,
-            UTILS,
-            this.projectile_manager,
-            this.object_manager,
-            this.players,
-            this.ais,
-            items,
-            hats,
-            accessories,
-            socket,
-            () => {},
-            () => {}
-        );
+        const player = new Player("self", 0);
         window.config = config || {};
 window.UTILS = UTILS || {};
 window.players = this.players || {};
