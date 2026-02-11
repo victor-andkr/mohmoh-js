@@ -1,3 +1,4 @@
+// credits to Ueh for base
 const vultr = {
     servers: []
 };
