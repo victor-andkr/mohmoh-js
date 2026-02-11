@@ -8090,7 +8090,7 @@ window.vultr = vultr;
             function connectSocketIfReady() {
 
                 // MAKE SURE IT'S READY:
-                if (!didLoad || !captchaReady) return;
+                if (!didLoad/* || !captchaReady*/) return;
                 startedConnecting = true;
 
                 setTimeout(() => {
