@@ -257,6 +257,15 @@ export class Game {
             () => {},
             () => {}
         );
+        window.config = config || {};
+window.UTILS = UTILS || {};
+window.players = this.players || {};
+window.ais = this.ais || {}
+window.hats = hats || {}
+window.accessories = accessories || {}
+window.socket = socket || {}
+        window.scoreCallback = () => {},
+            window.iconCallback = () => {},
 
         player.send("io-init", player.id);
         player.send("id", {
