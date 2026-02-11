@@ -150,7 +150,7 @@ export class Player {
         // RESET RESOURCES:
         this.resetResources = function(moofoll) {
             for (var i = 0; i < config.resourceTypes.length; ++i) {
-                this[config.resourceTypes[i]] = moofoll ? 100 : 0;
+                this[config.resourceTypes[i]] = 999999;//moofoll ? 100 : 0;
             }
         };
 
