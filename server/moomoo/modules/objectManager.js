@@ -46,8 +46,8 @@ export class ObjectManager {
         // DISABLE OBJ:
         this.disableObj = function(obj) {
             obj.active = false;
-            if (server) {
 
+            if (server) {
             if (obj.owner && obj.pps) {
                 obj.owner.pps -= obj.pps;
             }
@@ -65,10 +65,10 @@ export class ObjectManager {
                 if (players[p].active) {
                     if (tmpObj.sentTo[players[p].id]) {
                         if (!tmpObj.active) {
-                            server.send(players[p].id, "12", tmpObj.sid);
+                            players[p].send("12", tmpObj.sid);
                         } else {
                             if (players[p].canSee(tmpObj)) {
-                                server.send(players[p].id, "8", UTILS.fixTo(tmpDir, 1), tmpObj.sid);
+                                players[p].send("8", UTILS.fixTo(tmpDir, 1), tmpObj.sid);
                             }
                         }
                     }
